@@ -65,7 +65,7 @@ class Lumen:
         async with self.rings[ring]["lock"]:
             leds = list(self.rings[ring]["leds"])
             colors = [c.rgb for c in self.COLORS if c.name not in ("OFF", "WHITE")]
-            for i in range(0, loop_cnt):
+            for _ in range(0, loop_cnt):
                 for rgb in colors:
                     for led in leds:
                         self.strip.setPixelColor(
@@ -78,7 +78,7 @@ class Lumen:
         async with self.rings[ring]["lock"]:
             leds = list(self.rings[ring]["leds"])
             colors = [c.rgb for c in self.COLORS if c.name not in ("OFF", "WHITE")]
-            for i in range(0, loop_cnt):
+            for _ in range(0, loop_cnt):
                 for rgb in colors:
                     for led in leds:
                         self.strip.setPixelColor(
@@ -101,7 +101,9 @@ class Lumen:
                     for chaser in chasers:
                         rgb = chaser["color"].rgb
                         led = leds[chaser["position"]]
-                        self.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+                        self.strip.setPixelColor(
+                            led, Color(rgb.red, rgb.green, rgb.blue)
+                        )
                         chaser["position"] = (chaser["position"] + 1) % len(leds)
                     self.strip.show()
                     await sleep(speed)
@@ -146,9 +148,9 @@ class Lumen:
         await task_f
         await task_bg
         await sleep(1)
-        task_b = create_task(self.led_chase("small_b", 2, .25))
-        task_f = create_task(self.led_chase("small_f", 2, .15))
-        await self.big_led_chase(3, .1)
+        task_b = create_task(self.led_chase("small_b", 2, 0.25))
+        task_f = create_task(self.led_chase("small_f", 2, 0.15))
+        await self.big_led_chase(3, 0.1)
         await task_b
         await task_f
         await task_bg
