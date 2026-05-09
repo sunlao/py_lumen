@@ -7,5 +7,6 @@ genbadge[coverage]
 pylint
 pycodestyle
 pytest
+pytest-asyncio
 pip-audit
 tox
