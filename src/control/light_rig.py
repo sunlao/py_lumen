@@ -36,13 +36,13 @@ class LightRig:
             Zone(name="z9", ordinal=9, start=288, stop=289),
         ),
     )
-    FIXTURES = Fixtures(
+    CP = Fixtures(
         name="CP", description="Coin Pusher Installation", rack=(BIG, SMF, SMB)
     )
 
     def __init__(self) -> None:
         self.strip = PixelStrip(
-            self.FIXTURES.led_count,
+            max(r.leds.stop for r in CP.rack),
             self.PIN,
             brightness=self.BRIGHTNESS,
         )
