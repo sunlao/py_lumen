@@ -3,10 +3,19 @@ from models.policy import DTOConfig, DTOModuleConfig
 from asyncio import Lock
 
 
+class Zone(BaseModel):
+    model_config = DTOConfig
+    name: str
+    ordinal: int = Field(gt=0)
+    start: int = Field(ge=0)
+    stop: int = Field(gt=0)
+
+
 class Leds(BaseModel):
     model_config = DTOConfig
-    start: int
-    stop: int
+    start: int = Field(ge=0)
+    stop: int = Field(gt=0)
+    zones: tuple[Zone, ...] | None = None
 
 
 class Fixture(BaseModel):
@@ -14,3 +23,10 @@ class Fixture(BaseModel):
     name: str
     leds: Leds
     lock: Lock
+
+
+class Fixtures(BaseModel):
+    model_config = DTOModuleConfig
+    name: str
+    description: str
+    rack: tuple[Fixture, ...]

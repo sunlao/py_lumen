@@ -7,7 +7,8 @@ lumen = Lumen()
 
 def start() -> None:
     lumen.strip.begin()
-    lumen.all_off()    
+    lumen.all_off()
+
 
 async def scene1(loop_cnt) -> None:
     for _ in range(0, loop_cnt):
@@ -21,6 +22,7 @@ async def scene1(loop_cnt) -> None:
         await task_f
         lumen.all_off()
 
+
 async def scene2(loop_cnt) -> None:
     task_b = create_task(lumen.flash_random("small_b", loop_cnt))
     task_f = create_task(lumen.flash_random("small_f", loop_cnt))
@@ -29,6 +31,7 @@ async def scene2(loop_cnt) -> None:
     await task_f
     await task_bg
     lumen.all_off()
+
 
 async def scene3(loop_cnt) -> None:
     for _ in range(0, loop_cnt):
@@ -39,6 +42,7 @@ async def scene3(loop_cnt) -> None:
         await task_f
         await task_bg
         lumen.all_off()
+
 
 async def scene4(loop_cnt) -> None:
     colors = [c for c in lumen.COLORS if c.name not in ("OFF", "WHITE")]
@@ -54,12 +58,13 @@ async def scene4(loop_cnt) -> None:
         await task_f
         lumen.all_off()
 
+
 if __name__ == "__main__":
     start()
     while True:
-        run(scene1(1)) # shuffl led & colr
-        run(scene2(1)) # flash
-        run(scene3(1)) # chase
-        run(scene2(1)) # flash
-        run(scene4(1)) # shuffl led 
-        run(scene2(1)) # flash
+        run(scene1(1))  # shuffl led & colr
+        run(scene2(1))  # flash
+        run(scene3(1))  # chase
+        run(scene2(1))  # flash
+        run(scene4(1))  # shuffl led
+        run(scene2(1))  # flash

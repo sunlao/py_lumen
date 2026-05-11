@@ -7,7 +7,7 @@ lumen = Lumen()
 
 def start() -> None:
     lumen.strip.begin()
-    lumen.all_off()    
+    lumen.all_off()
 
 
 async def scene4(loop_cnt) -> None:
@@ -25,7 +25,8 @@ async def scene4(loop_cnt) -> None:
         await sleep(3)
         lumen.all_off()
 
+
 if __name__ == "__main__":
     start()
     while True:
-        run(scene4(1)) # shuffl led 
+        run(scene4(1))  # shuffl led

@@ -19,7 +19,6 @@ class Lumen:
     COLORS = [OFF, WHITE, PURPLE, RED, CYAN, GREEN, YELLOW, ORANGE, PINK, BLUE]
     # COLORS = [OFF, WHITE, RED, GREEN, BLUE, YELLOW, PURPLE, ORANGE]
 
-
     def __init__(self) -> None:
         pin = 10
         self.rings = {
@@ -29,7 +28,7 @@ class Lumen:
         }
 
         self.ring_zones = {
-            1: {"leds": range(48, 108)},   # 60
+            1: {"leds": range(48, 108)},  # 60
             2: {"leds": range(108, 156)},  # 48
             3: {"leds": range(156, 196)},  # 40
             4: {"leds": range(196, 228)},  # 32
@@ -135,35 +134,63 @@ class Lumen:
                 print(f"color.ordinal: {color.ordinal}")
                 for zone in self.ring_zones:
                     if color.ordinal < 9:
-                        next_rgb = [c.rgb for c in colors if c.ordinal == color.ordinal + 1][0]
+                        next_rgb = [
+                            c.rgb for c in colors if c.ordinal == color.ordinal + 1
+                        ][0]
                     else:
-                        next_rgb = [c.rgb for c in colors if c.ordinal == color.ordinal - 7][0]
-                    next_rgb2 = rgb                        
+                        next_rgb = [
+                            c.rgb for c in colors if c.ordinal == color.ordinal - 7
+                        ][0]
+                    next_rgb2 = rgb
                     if color.ordinal < 8:
-                        next_rgb2 = [c.rgb for c in colors if c.ordinal == color.ordinal + 2][0]   
+                        next_rgb2 = [
+                            c.rgb for c in colors if c.ordinal == color.ordinal + 2
+                        ][0]
                     else:
-                        next_rgb2 = [c.rgb for c in colors if c.ordinal == color.ordinal - 6][0]
+                        next_rgb2 = [
+                            c.rgb for c in colors if c.ordinal == color.ordinal - 6
+                        ][0]
                     print(f"zone: {zone}")
                     if first_pass is True:
                         for led in self.ring_zones[zone]["leds"]:
-                            self.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+                            self.strip.setPixelColor(
+                                led, Color(rgb.red, rgb.green, rgb.blue)
+                            )
                         if zone >= 4:
                             for led in self.ring_zones[zone - 3]["leds"]:
-                                self.strip.setPixelColor(led, Color(next_rgb.red, next_rgb.green, next_rgb.blue))
+                                self.strip.setPixelColor(
+                                    led,
+                                    Color(next_rgb.red, next_rgb.green, next_rgb.blue),
+                                )
                         if zone >= 7:
                             for led in self.ring_zones[zone - 6]["leds"]:
-                                self.strip.setPixelColor(led, Color(next_rgb2.red, next_rgb2.green, next_rgb2.blue))
+                                self.strip.setPixelColor(
+                                    led,
+                                    Color(
+                                        next_rgb2.red, next_rgb2.green, next_rgb2.blue
+                                    ),
+                                )
                     self.strip.show()
                     await sleep(1)
                     if first_pass is False:
                         for led in self.ring_zones[zone]["leds"]:
-                            self.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+                            self.strip.setPixelColor(
+                                led, Color(rgb.red, rgb.green, rgb.blue)
+                            )
                         if zone >= 4:
                             for led in self.ring_zones[zone - 3]["leds"]:
-                                self.strip.setPixelColor(led, Color(next_rgb.red, next_rgb.green, next_rgb.blue))
+                                self.strip.setPixelColor(
+                                    led,
+                                    Color(next_rgb.red, next_rgb.green, next_rgb.blue),
+                                )
                         if zone >= 7:
                             for led in self.ring_zones[zone - 6]["leds"]:
-                                self.strip.setPixelColor(led, Color(next_rgb2.red, next_rgb2.green, next_rgb2.blue))
+                                self.strip.setPixelColor(
+                                    led,
+                                    Color(
+                                        next_rgb2.red, next_rgb2.green, next_rgb2.blue
+                                    ),
+                                )
 
                     # next_rgb = rgb
                     # if color.ordinal < 9:
@@ -183,7 +210,6 @@ class Lumen:
                     #     for led in self.ring_zones[zone - 6]["leds"]:
                     #         self.strip.setPixelColor(led, Color(next_rgb2.red, next_rgb2.green, next_rgb2.blue))
 
-
                     # rgb_next = rgb
                     # if color.ordinal < 9:
                     #     rgb_next = [c.rgb for c in colors if c.ordinal == color.ordinal + 1][0]
@@ -191,7 +217,7 @@ class Lumen:
                     #     rgb_next2 = [c.rgb for c in colors if c.ordinal == color.ordinal + 2][0]
                     # if color.ordinal == 2:
                     #     # ordinal 0 & 1 excluded by not in
-                    #     # first pass only 
+                    #     # first pass only
                     #     for led in self.ring_zones[zone]["leds"]:
                     #         self.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
                     # if zone >= 4 and color.ordinal != 9:
@@ -213,12 +239,11 @@ class Lumen:
                     #     for led in self.ring_zones[zone]["leds"]:
                     #     rgb_prev = [c.rgb for c in colors if c.ordinal == color.ordinal - 1][0]
                     #     for led in self.ring_zones[zone-4]["leds"]:
-                    #         self.strip.setPixelColor(led, Color(rgb_prev.red, rgb_prev.green, rgb_prev.blue))                            
-                    # if zone > 4 and zone < 8 and color.ordinal < 9:                            
-                    #     rgb_next = [c.rgb for c in colors if c.ordinal == color.ordinal + 1][0]                            
+                    #         self.strip.setPixelColor(led, Color(rgb_prev.red, rgb_prev.green, rgb_prev.blue))
+                    # if zone > 4 and zone < 8 and color.ordinal < 9:
+                    #     rgb_next = [c.rgb for c in colors if c.ordinal == color.ordinal + 1][0]
                     #     # for led in self.ring_zones[zone-4]["leds"]:
                     #         # self.strip.setPixelColor(led, Color(rgb_next.red, rgb_next.green, rgb_next.blue))
-
 
     async def start(self) -> None:
         self.strip.begin()
