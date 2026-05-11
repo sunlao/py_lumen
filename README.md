@@ -1,6 +1,39 @@
-# py_lumen
+# Overview
 pythonic light controller via rasberry py for art projects
 
+Designed for WS2812 LED usage via the module rpi-ws281x 
+
+Assumes: 
+
+- Two 24 Bits WS2812 RGB LED Ring =  https://www.amazon.com/dp/B09YTGCRV1
+- One 241 LEDs 9 Rings WS2812B 5050 RGB = https://www.amazon.com/dp/B083VWVP3J
+
+# Run
+
+rpi-ws281x requires root level priveleges access.
+
+run scene manually
+ - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m control.scene 
+
+run color tune manually
+ - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m control.color_tune 
+
+
+## Startup service
+
+- sudo nano /etc/systemd/system/py_lumen.service
+- sudo nano /etc/systemd/system/py_lumen_audio.service
+
+## Service Commands
+
+- sudo systemctl enable py_lumen_audio
+- sudo systemctl enable py_lumen.service
+- sudo systemctl disable py_lumen_audio
+- sudo systemctl disable py_lumen.service
+- sudo systemctl start py_lumen_audio
+- sudo systemctl start py_lumen.service
+- sudo systemctl stop py_lumen_audio
+- sudo systemctl stop py_lumen.service
 
 # Testing
 Tox runs executes testing activities using the 'tox.ini'.  All testing tools reference use the 'tox.ini' to manage their configs.
