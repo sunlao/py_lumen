@@ -1,6 +1,6 @@
 from asyncio import sleep, create_task
-from rpi_ws281x import Color
-from models.colors import Colors, RGB
+from rpi_ws281x import Color as Color
+from models.colors import Colors, RGB, ColorGroup
 from models.fixtures import Fixture
 from control.light_rig import LightRig
 
@@ -17,7 +17,9 @@ class Sequencer:
     ORANGE = Colors(name="ORANGE", ordinal=7, rgb=RGB(red=255, green=50, blue=0))
     PINK = Colors(name="PINK", ordinal=8, rgb=RGB(red=254, green=0, blue=150))
     BLUE = Colors(name="BLUE", ordinal=9, rgb=RGB(red=0, green=0, blue=255))
-    COLORS = [OFF, WHITE, PURPLE, RED, CYAN, GREEN, YELLOW, ORANGE, PINK, BLUE]
+    COLORGROUP = ColorGroup(
+        collection=(OFF, WHITE, PURPLE, RED, CYAN, GREEN, YELLOW, ORANGE, PINK, BLUE)
+    )
 
     def __init__(self) -> None:
         self.rig = LightRig()

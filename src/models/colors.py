@@ -14,3 +14,8 @@ class Colors(BaseModel):
     name: str
     ordinal: int = Field(ge=0)
     rgb: RGB
+
+
+class ColorGroup(BaseModel):
+    model_config = DTOConfig
+    collection: tuple[Colors, ...]
