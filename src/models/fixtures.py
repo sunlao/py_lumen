@@ -22,7 +22,7 @@ class Leds(BaseModel):
     model_config = DTOConfig
     start: int = Field(ge=0)
     stop: int = Field(gt=0)
-    zones: tuple[Zone, ...] | None = None
+    zones: tuple[Zones, ...] | None = None
 
 
 class Fixture(BaseModel):

@@ -37,9 +37,7 @@ class Pattern:
                 )
             self.rig.strip.show()
 
-    async def flash_by_cologroup(
-            self, zone: Zone, colors: ColorGroup, delay: float
-        ):
+    async def flash_by_cologroup(self, zone: Zone, colors: ColorGroup, delay: float):
         async with fixture.lock:
             for led in range(zone.start, zone.stop):
                 self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
@@ -60,9 +58,7 @@ class Pattern:
                 self.rig.strip.show()
                 await sleep(delay)
 
-    async def shuffle_by_cologroup(
-            self, zone: Zone, colors: ColorGroup, delay: float
-        ):
+    async def shuffle_by_cologroup(self, zone: Zone, colors: ColorGroup, delay: float):
         async with fixture.lock:
             leds = [l for l in range(zone.start, zone.stop)]
             shuffle(leds)

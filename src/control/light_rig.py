@@ -27,7 +27,7 @@ class LightRig:
             stop=289,
             zones=(
                 Zones(
-                    name="Single", 
+                    name="Single",
                     description="Single Ring Zones ",
                     group=(
                         Zone(name="Ring1", ordinal=1, start=48, stop=108),
@@ -39,17 +39,17 @@ class LightRig:
                         Zone(name="Ring7", ordinal=7, start=268, stop=280),
                         Zone(name="Ring8", ordinal=8, start=280, stop=288),
                         Zone(name="Ring9", ordinal=9, start=288, stop=289),
-                    )
+                    ),
                 ),
                 Zones(
-                    name="Three", 
+                    name="Three",
                     description="Three Ring Zones ",
                     group=(
                         Zone(name="Ring1-3", ordinal=1, start=48, stop=196),
                         Zone(name="Ring4-6", ordinal=2, start=196, stop=268),
                         Zone(name="Ring7-9", ordinal=3, start=268, stop=289),
-                    )
-                ),                
+                    ),
+                ),
             ),
         ),
         lock=Lock(),
