@@ -1,12 +1,49 @@
 # Overview
-pythonic light controller via rasberry py for art projects
+pythonic light controller via rasberry py for art projects. Designed for WS2812 LED usage via the module rpi-ws281x 
 
-Designed for WS2812 LED usage via the module rpi-ws281x 
+## Modules and Classes
 
-Assumes: 
+## Patterns
+
+The pattern module are resuable assertions of Leds by `fixtures` and `zones`.  Some examples of patterns are:
+
+- activate
+- flash
+- chase
+- shuffle by color group 
+
+## Control
+
+The Control module asserts led patterns for a `light_rig` class. A light_rig is a class that asserts lighting componets called fixtures (see below). Patterns can organzied into a `steps` class. Steps can be orgnized by the `sequence` class.  A simple sequences may assert a pattern directly. A `scene` is the final class in the controller which is a collection of sequences.  Scenes are what is executed by services. Examples of a simple sequence 
+
+- Turn Fixture Off
+- Flash Fixture Single Color
+
+Example of complex sequence `Create Target`.
+
+- Step 1 - Activate 1 zone: "rings 1-3"
+- Step 2 - Activate 2 zones: "rings 1-3" and "rings 4-6" 
+- Step 3 - Activate 3 zones: "rings 1-3", "rings 4-6" and "rings 7-9" 
+- Turn Fixture Off
+
+##  Models
+
+Models are stored in `src.models`
+
+## Fixtures 
+
+A Lighting component is called a `fixture` and can be grouped by `Fixtures`. A fixture is locked on assertion to ensure only one call can be made it at a time. Current fixtures instantiated in the `src.control.light_rig` class:
 
 - Two 24 Bits WS2812 RGB LED Ring =  https://www.amazon.com/dp/B09YTGCRV1
 - One 241 LEDs 9 Rings WS2812B 5050 RGB = https://www.amazon.com/dp/B083VWVP3J
+
+### Leds and Zones
+
+Fixtures have `LED`s that are numbered and can be organized into `Zones`. 
+
+## Colors 
+
+A `Color` is a specific assertion of `RGB`.  A collection colors can be grouped into a `ColorGroup` 
 
 # Run
 

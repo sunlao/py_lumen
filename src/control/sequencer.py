@@ -1,4 +1,6 @@
+from random import shuffle
 from asyncio import sleep, create_task
+from collections.abc import Awaitable, Callable
 from rpi_ws281x import Color as Color
 from models.colors import Colors, RGB, ColorGroup
 from models.fixtures import Fixture
@@ -17,8 +19,8 @@ class Sequencer:
     ORANGE = Colors(name="ORANGE", ordinal=7, rgb=RGB(red=255, green=50, blue=0))
     PINK = Colors(name="PINK", ordinal=8, rgb=RGB(red=254, green=0, blue=150))
     BLUE = Colors(name="BLUE", ordinal=9, rgb=RGB(red=0, green=0, blue=255))
-    COLORGROUP = ColorGroup(
-        collection=(OFF, WHITE, PURPLE, RED, CYAN, GREEN, YELLOW, ORANGE, PINK, BLUE)
+    COLORS = ColorGroup(
+        collection=(PURPLE, RED, CYAN, GREEN, YELLOW, ORANGE, PINK, BLUE)
     )
 
     def __init__(self) -> None:
@@ -26,14 +28,17 @@ class Sequencer:
         self.rig.start()
         self.rack = self.rig.FIXTURES.rack
 
-    async def _activate_all(self, fixture: Fixture, rgb: RGB):
-        async with fixture.lock:
-            for led in range(fixture.leds.start, fixture.leds.stop):
-                self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
-            self.rig.strip.show()
-
-    async def all_red_off(self):
+    async def all_red_activate(self):
         tasks = [create_task(self._activate_all(f, self.RED.rgb)) for f in self.rack]
+        for t in tasks:
+            await t
+        await sleep(2)
+        tasks = [create_task(self._activate_all(f, self.OFF.rgb)) for f in self.rack]
+        for t in tasks:
+            await t
+
+    async def all_blue_random(self):
+        tasks = [create_task(self._shuffle_led(f, self.BLUE.rgb, .1)) for f in self.rack]
         for t in tasks:
             await t
         await sleep(2)
