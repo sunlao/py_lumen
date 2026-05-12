@@ -1,6 +1,6 @@
 from asyncio import Lock
 from rpi_ws281x import PixelStrip
-from models.fixtures import Fixture, Fixtures, Leds
+from models.fixtures import Fixture, Fixtures, Leds, Zone
 
 
 class LightRig:
@@ -22,33 +22,30 @@ class LightRig:
     BIG = Fixture(
         name="big",
         description="Big Circle",
-        leds=Leds(start=48, stop=289),
-        lock=Lock(),
-        zones=(
-            Zone(name="z1", ordinal=1, start=48, stop=108),
-            Zone(name="z2", ordinal=2, start=108, stop=156),
-            Zone(name="z3", ordinal=3, start=156, stop=196),
-            Zone(name="z4", ordinal=4, start=196, stop=228),
-            Zone(name="z5", ordinal=5, start=228, stop=252),
-            Zone(name="z6", ordinal=6, start=252, stop=268),
-            Zone(name="z7", ordinal=7, start=268, stop=280),
-            Zone(name="z8", ordinal=8, start=280, stop=288),
-            Zone(name="z9", ordinal=9, start=288, stop=289),
+        leds=Leds(
+            start=48,
+            stop=289,
+            zones=(
+                Zone(name="z1", ordinal=1, start=48, stop=108),
+                Zone(name="z2", ordinal=2, start=108, stop=156),
+                Zone(name="z3", ordinal=3, start=156, stop=196),
+                Zone(name="z4", ordinal=4, start=196, stop=228),
+                Zone(name="z5", ordinal=5, start=228, stop=252),
+                Zone(name="z6", ordinal=6, start=252, stop=268),
+                Zone(name="z7", ordinal=7, start=268, stop=280),
+                Zone(name="z8", ordinal=8, start=280, stop=288),
+                Zone(name="z9", ordinal=9, start=288, stop=289),
+            ),
         ),
+        lock=Lock(),
     )
-    CP = Fixtures(
+    FIXTURES = Fixtures(
         name="CP", description="Coin Pusher Installation", rack=(BIG, SMF, SMB)
     )
 
     def __init__(self) -> None:
-        self.strip = PixelStrip(
-            max(r.leds.stop for r in CP.rack),
-            self.PIN,
-            brightness=self.BRIGHTNESS,
-        )
-
-    # def _max_led():
-
+        max_led = max(r.leds.stop for r in self.FIXTURES.rack)
+        self.strip = PixelStrip(max_led, self.PIN, brightness=self.BRIGHTNESS)
 
     def start(self) -> None:
         self.strip.begin()

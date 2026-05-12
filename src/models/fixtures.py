@@ -21,6 +21,7 @@ class Leds(BaseModel):
 class Fixture(BaseModel):
     model_config = DTOModuleConfig
     name: str
+    description: str
     leds: Leds
     lock: Lock
 
