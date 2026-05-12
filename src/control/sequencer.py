@@ -1,4 +1,4 @@
-from asyncio import Lock, sleep, create_task
+from asyncio import sleep, create_task
 from rpi_ws281x import Color
 from models.colors import Colors, RGB
 from models.fixtures import Fixture

@@ -9,13 +9,13 @@ class LightRig:
     BRIGHTNESS = 30
     SMB = Fixture(
         name="smb",
-        description="Small Circle Front",
+        description="Small Circle Back",
         leds=Leds(start=0, stop=24),
         lock=Lock(),
     )
     SMF = Fixture(
         name="smf",
-        description="Small Circle Back",
+        description="Small Circle Front",
         leds=Leds(start=24, stop=48),
         lock=Lock(),
     )
