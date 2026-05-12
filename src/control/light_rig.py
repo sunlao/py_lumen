@@ -1,6 +1,6 @@
 from asyncio import Lock
 from rpi_ws281x import PixelStrip
-from models.fixtures import Fixture, Fixtures, Leds, Zone
+from models.fixtures import Fixture, Fixtures, Leds, Zone, Zones
 
 
 class LightRig:
@@ -26,15 +26,30 @@ class LightRig:
             start=48,
             stop=289,
             zones=(
-                Zone(name="z1", ordinal=1, start=48, stop=108),
-                Zone(name="z2", ordinal=2, start=108, stop=156),
-                Zone(name="z3", ordinal=3, start=156, stop=196),
-                Zone(name="z4", ordinal=4, start=196, stop=228),
-                Zone(name="z5", ordinal=5, start=228, stop=252),
-                Zone(name="z6", ordinal=6, start=252, stop=268),
-                Zone(name="z7", ordinal=7, start=268, stop=280),
-                Zone(name="z8", ordinal=8, start=280, stop=288),
-                Zone(name="z9", ordinal=9, start=288, stop=289),
+                Zones(
+                    name="Single", 
+                    description="Single Ring Zones ",
+                    group=(
+                        Zone(name="Ring1", ordinal=1, start=48, stop=108),
+                        Zone(name="Ring2", ordinal=2, start=108, stop=156),
+                        Zone(name="Ring3", ordinal=3, start=156, stop=196),
+                        Zone(name="Ring4", ordinal=4, start=196, stop=228),
+                        Zone(name="Ring5", ordinal=5, start=228, stop=252),
+                        Zone(name="Ring6", ordinal=6, start=252, stop=268),
+                        Zone(name="Ring7", ordinal=7, start=268, stop=280),
+                        Zone(name="Ring8", ordinal=8, start=280, stop=288),
+                        Zone(name="Ring9", ordinal=9, start=288, stop=289),
+                    )
+                ),
+                Zones(
+                    name="Three", 
+                    description="Three Ring Zones ",
+                    group=(
+                        Zone(name="Ring1-3", ordinal=1, start=48, stop=196),
+                        Zone(name="Ring4-6", ordinal=2, start=196, stop=268),
+                        Zone(name="Ring7-9", ordinal=3, start=268, stop=289),
+                    )
+                ),                
             ),
         ),
         lock=Lock(),

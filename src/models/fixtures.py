@@ -11,6 +11,13 @@ class Zone(BaseModel):
     stop: int = Field(gt=0)
 
 
+class Zones(BaseModel):
+    model_config = DTOConfig
+    name: str
+    description: str
+    group: tuple[Zone, ...]
+
+
 class Leds(BaseModel):
     model_config = DTOConfig
     start: int = Field(ge=0)
