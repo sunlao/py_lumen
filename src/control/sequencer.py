@@ -24,21 +24,17 @@ class Sequencer:
         self.rig.start()
         self.rack = self.rig.FIXTURES.rack
 
-    async def _activate_led_all(self, fixture: Fixture, rgb: RGB):
+    async def _activate_all(self, fixture: Fixture, rgb: RGB):
         async with fixture.lock:
             for led in range(fixture.leds.start, fixture.leds.stop):
                 self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
             self.rig.strip.show()
 
     async def all_red_off(self):
-        tasks = [
-            create_task(self._activate_led_all(f, self.RED.rgb)) for f in self.rack
-        ]
+        tasks = [create_task(self._activate_all(f, self.RED.rgb)) for f in self.rack]
         for t in tasks:
             await t
         await sleep(2)
-        tasks = [
-            create_task(self._activate_led_all(f, self.OFF.rgb)) for f in self.rack
-        ]
+        tasks = [create_task(self._activate_all(f, self.OFF.rgb)) for f in self.rack]
         for t in tasks:
             await t
