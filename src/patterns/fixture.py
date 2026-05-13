@@ -3,8 +3,8 @@ from random import shuffle
 from rpi_ws281x import Color
 from models.colors import RGB, ColorGroup
 from models.fixtures import Fixture
-from palette import Palette
 from rig.light_array import LightArray
+from rig.palette import Palette
 
 
 class Pattern:

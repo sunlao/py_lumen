@@ -4,6 +4,6 @@ from control.steps import Steps
 
 s = Steps()
 
-run(s.all_offshuffle_by_cologroup())
-sleep(3)
+run(s.all_shuffle_by_color_group())
+# sleep(1)
 run(s.all_off())

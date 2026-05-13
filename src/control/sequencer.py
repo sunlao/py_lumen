@@ -27,7 +27,7 @@ class Sequencer:
         ]
         for t in tasks:
             await t
-        await sleep(2)
+        await sleep(1)
         tasks = [create_task(self._activate_all(f, self.OFF.rgb)) for f in self.rack]
         for t in tasks:
             await t
