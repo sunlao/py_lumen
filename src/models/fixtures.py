@@ -37,4 +37,4 @@ class Fixtures(BaseModel):
     model_config = DTOModuleConfig
     name: str
     description: str
-    rack: tuple[Fixture, ...]
+    fixtures: tuple[Fixture, ...]

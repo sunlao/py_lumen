@@ -6,41 +6,7 @@ from models.colors import Colors, RGB
 
 class Lumen:
 
-    OFF = Colors(name="OFF", ordinal=0, rgb=RGB(red=0, green=0, blue=0))
-    WHITE = Colors(name="WHITE", ordinal=1, rgb=RGB(red=255, green=255, blue=255))
-    PURPLE = Colors(name="PURPLE", ordinal=2, rgb=RGB(red=100, green=0, blue=175))
-    RED = Colors(name="RED", ordinal=3, rgb=RGB(red=255, green=0, blue=0))
-    CYAN = Colors(name="CYAN", ordinal=4, rgb=RGB(red=0, green=180, blue=220))
-    GREEN = Colors(name="GREEN", ordinal=5, rgb=RGB(red=20, green=120, blue=20))
-    YELLOW = Colors(name="YELLOW", ordinal=6, rgb=RGB(red=255, green=180, blue=0))
-    ORANGE = Colors(name="ORANGE", ordinal=7, rgb=RGB(red=255, green=50, blue=0))
-    PINK = Colors(name="PINK", ordinal=8, rgb=RGB(red=254, green=0, blue=150))
-    BLUE = Colors(name="BLUE", ordinal=9, rgb=RGB(red=0, green=0, blue=255))
-    COLORS = [OFF, WHITE, PURPLE, RED, CYAN, GREEN, YELLOW, ORANGE, PINK, BLUE]
-    # COLORS = [OFF, WHITE, RED, GREEN, BLUE, YELLOW, PURPLE, ORANGE]
-
     def __init__(self) -> None:
-        pin = 10
-        self.rings = {
-            "small_f": {"leds": range(0, 24), "lock": Lock()},
-            "small_b": {"leds": range(24, 48), "lock": Lock()},
-            "big": {"leds": range(48, 289), "lock": Lock()},
-        }
-
-        self.ring_zones = {
-            1: {"leds": range(48, 108)},  # 60
-            2: {"leds": range(108, 156)},  # 48
-            3: {"leds": range(156, 196)},  # 40
-            4: {"leds": range(196, 228)},  # 32
-            5: {"leds": range(228, 252)},  # 24
-            6: {"leds": range(252, 268)},  # 16
-            7: {"leds": range(268, 280)},  # 12
-            8: {"leds": range(280, 288)},  # 8
-            9: {"leds": range(288, 289)},  # 1
-        }
-
-        self.led_count = sum(len(ring["leds"]) for ring in self.rings.values())
-        self.strip = PixelStrip(self.led_count, pin, brightness=30)
 
     def _next_color(self, ordinal):
         return None

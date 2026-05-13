@@ -1,12 +1,8 @@
 from asyncio import Lock
-from rpi_ws281x import PixelStrip
 from models.fixtures import Fixture, Fixtures, Leds, Zone, Zones
 
 
-class LightRig:
-
-    PIN = 10
-    BRIGHTNESS = 30
+class Rack:
     SMB = Fixture(
         name="smb",
         description="Small Circle Back",
@@ -54,13 +50,6 @@ class LightRig:
         ),
         lock=Lock(),
     )
-    FIXTURES = Fixtures(
-        name="CP", description="Coin Pusher Installation", rack=(BIG, SMF, SMB)
+    RINGS = Fixtures(
+        name="CP", description="Coin Pusher Installation", fixtures=(BIG, SMF, SMB)
     )
-
-    def __init__(self) -> None:
-        max_led = max(r.leds.stop for r in self.FIXTURES.rack)
-        self.strip = PixelStrip(max_led, self.PIN, brightness=self.BRIGHTNESS)
-
-    def start(self) -> None:
-        self.strip.begin()

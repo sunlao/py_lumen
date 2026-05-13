@@ -1,7 +1,9 @@
 from asyncio import run
-from control.sequencer import Sequencer
+from time import sleep
+from control.steps import Steps
 
-s = Sequencer()
+s = Steps()
 
-run(s.all_red_activate())
-run(s.all_blue_random())
+run(s.all_offshuffle_by_cologroup())
+sleep(3)
+run(s.all_off())

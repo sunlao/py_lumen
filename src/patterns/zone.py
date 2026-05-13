@@ -1,61 +1,63 @@
+from asyncio import sleep
+from random import shuffle
+from rpi_ws281x import Color
 from models.colors import RGB, ColorGroup
-from control.light_rig import LightRig
-from control.sequencer import Sequencer
 from models.fixtures import Zone
+from pallette import Palette
+from rig.light_array import LightArray
 
 
 class Pattern:
 
     def __init__(self) -> None:
-        s = Sequencer
-        self.off = s.OFF.rgb
-        self.rig = LightRig()
-        self.rig.start()
-        self.rack = self.rig.FIXTURES.rack
+        p = Palette
+        self.off = p.OFF.rgb
+        self.array = LightArray()
+        self.array.start()
 
     async def activate(self, zone: Zone, rgb: RGB):
         async with fixture.lock:
             for led in range(zone.start, zone.stop):
-                self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
-            self.rig.strip.show()
+                self.array.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+            self.array.strip.show()
 
     async def chase(self, zone: Zone, rgb: RGB, delay: float):
         async with fixture.lock:
             for led in range(zone.start, zone.stop):
-                self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
-                self.rig.strip.show()
+                self.array.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+                self.array.strip.show()
                 await sleep(delay)
 
     async def flash(self, zone: Zone, rgb: RGB, delay: float):
         async with fixture.lock:
             for led in range(zone.start, zone.stop):
-                self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
-            self.rig.strip.show()
+                self.array.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+            self.array.strip.show()
             for led in range(zone.start, zone.stop):
-                self.rig.strip.setPixelColor(
+                self.array.strip.setPixelColor(
                     led, Color(self.off.red, self.off.green, self.off.blue)
                 )
-            self.rig.strip.show()
+            self.array.strip.show()
 
     async def flash_by_cologroup(self, zone: Zone, colors: ColorGroup, delay: float):
         async with fixture.lock:
             for led in range(zone.start, zone.stop):
-                self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
-            self.rig.strip.show()
+                self.array.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+            self.array.strip.show()
             await sleep(delay)
             for led in range(zone.start, zone.stop):
-                self.rig.strip.setPixelColor(
+                self.array.strip.setPixelColor(
                     led, Color(self.off.red, self.off.green, self.off.blue)
                 )
-            self.rig.strip.show()
+            self.array.strip.show()
 
     async def shuffle(self, zone: Zone, rgb: RGB, delay: float):
         async with fixture.lock:
             leds = [l for l in range(zone.start, zone.stop)]
             shuffle(leds)
             for led in leds:
-                self.rig.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
-                self.rig.strip.show()
+                self.array.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
+                self.array.strip.show()
                 await sleep(delay)
 
     async def shuffle_by_cologroup(self, zone: Zone, colors: ColorGroup, delay: float):
@@ -64,8 +66,8 @@ class Pattern:
             shuffle(leds)
             for led in leds:
                 for c in colors:
-                    self.rig.strip.setPixelColor(
+                    self.array.strip.setPixelColor(
                         led, Color(c.rgb.red, c.rgb.green, c.rgb.blue)
                     )
-                    self.rig.strip.show()
+                    self.array.strip.show()
                     await sleep(delay)
