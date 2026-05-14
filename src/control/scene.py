@@ -9,7 +9,7 @@ class Scene:
         self.s = Sequences()
         self.p = Palette()
 
-    async def exceute(self) -> None: 
+    async def exceute(self) -> None:
         await self.s.all_shuffle_by_color_group(2)
         await self.s.all_shuffle(self.p.BLUE.rgb, 2)
         await self.s.all_flash_by_color_group(2)
