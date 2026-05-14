@@ -1,5 +1,6 @@
 from asyncio import create_task
 from models.colors import RGB
+from models.fixtures import Fixture
 from patterns.fixture import Pattern
 from rig.palette import Palette
 from rig.rack import Rack
@@ -17,33 +18,30 @@ class Steps:
         self.small = [rack.SMF, rack.SMB]
         self.fixtures = rack.RINGS.fixtures
 
+    async def _small_chase(self, fixture: Fixture, rgb: RGB) -> None:
+        await self.all_off()
+        print("f1")        
+        await self.pattern.chase(fixture, rgb, 0.375)
+        print("f2")
+        await self.all_off()
+        print("f3")
+        await self.pattern.chase(fixture, rgb, 0.375)
+        print("f4")
+        await self.all_off()
+
+    async def _big_chase(self) -> None:
+        await self.all_off()
+        tasks = [
+            create_task(self.pattern.chase_multi(self.big, self.colors, 0.025))
+            for f in self.small
+        ]
+        for t in tasks:
+            await t
+
     async def all_off(self) -> None:
         tasks = [create_task(self.pattern.activate(f, self.off)) for f in self.fixtures]
         for t in tasks:
             await t
-
-    async def small_chase(self, rgb: RGB, repeat) -> None:
-        await self.all_off()
-        for i in range(repeat):
-            tasks = [
-                create_task(self.pattern.chase(f, rgb, 0.375))
-                for f in self.small
-            ]
-            for t in tasks:
-                await t
-            await self.all_off()
-
-
-    async def big_chase(self, repeat) -> None:
-        await self.all_off()
-        for i in range(repeat):
-            tasks = [
-                create_task(self.pattern.chase_multi(self.big, self.colors, 0.025))
-                for f in self.small
-            ]
-            for t in tasks:
-                await t
-        await self.all_off()
 
     async def all_flash(self, rgb: RGB, repeat) -> None:
         await self.all_off()
@@ -94,3 +92,12 @@ class Steps:
             for t in tasks:
                 await t
             await self.all_off()
+
+    async def chase (self, rgb: RGB, repeat) -> None:
+        for i in range(repeat):
+            task = create_task(self._big_chase())
+            tasks = [create_task(self._small_chase(f, rgb)) for f in self.small]
+            tasks.append(task)
+            for t in tasks:
+                await t
+        await self.all_off()

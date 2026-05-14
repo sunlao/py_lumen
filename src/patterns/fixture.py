@@ -31,22 +31,23 @@ class Pattern:
     async def chase_multi(self, fixture: Fixture, colors: ColorGroup, delay: float) -> None:
         leds = [l for l in range(fixture.leds.start, fixture.leds.stop)]
         palette = [c for c in colors.collection]
-        spacing = (len(leds) // len(colors.collection)) * .6
+        spacing = max(1, int((len(leds) // len(colors.collection)) * .6))
         chasers = [{"position": 0, "color": palette[0]}]
-        for lead_step in range(len(leds)):
-            if lead_step > 0 and lead_step % spacing == 0:
-                color = palette[len(chasers) % len(palette)]
-                chasers.append({"position": 0, "color": color})
-            for chaser in chasers:
-                rgb = chaser["color"].rgb
-                led = leds[chaser["position"]]
-                self.array.strip.setPixelColor(
-                    led,
-                    Color(rgb.red, rgb.green, rgb.blue),
-                )
-                chaser["position"] = (chaser["position"] + 1) % len(leds)
-            self.array.strip.show()
-            await sleep(delay)
+        async with fixture.lock:
+            for lead_step in range(len(leds)):
+                if lead_step > 0 and lead_step % spacing == 0:
+                    color = palette[len(chasers) % len(palette)]
+                    chasers.append({"position": 0, "color": color})
+                for chaser in chasers:
+                    rgb = chaser["color"].rgb
+                    led = leds[chaser["position"]]
+                    self.array.strip.setPixelColor(
+                        led,
+                        Color(rgb.red, rgb.green, rgb.blue),
+                    )
+                    chaser["position"] = (chaser["position"] + 1) % len(leds)
+                self.array.strip.show()
+                await sleep(delay)
 
     async def flash(self, fixture: Fixture, rgb: RGB, delay: float):
         async with fixture.lock:
