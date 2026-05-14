@@ -6,7 +6,7 @@ from rig.palette import Palette
 from rig.rack import Rack
 
 
-class Steps:
+class Sequences:
 
     def __init__(self) -> None:
         palette = Palette
@@ -23,7 +23,7 @@ class Steps:
         for i in range(5):
             await self.pattern.chase(fixture, rgb, 0.1)
             await self.small_off()
- 
+
 
     async def _big_chase(self) -> None:
         await self.pattern.activate(self.big, self.off)

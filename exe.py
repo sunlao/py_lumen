@@ -1,10 +1,11 @@
-from control.lumen import Lumen
+from asyncio import run
+from control.scene import Scene
 
 
-def test_start():
-    Lumen().start()
+async def exceute():
+    await Scene().exceute()
 
 if __name__ == "__main__":
     print("start")
-    test_start()
+    run(exceute())
     print("end")
