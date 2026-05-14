@@ -38,13 +38,12 @@ class Steps:
         await self.all_off()
         for i in range(repeat):
             tasks = [
-                create_task(self.pattern.chase_multi(self.big, self.colors, 3, 0.1))
+                create_task(self.pattern.chase_multi(self.big, self.colors, 2, 0.025))
                 for f in self.small
             ]
             for t in tasks:
                 await t
             await self.all_off()
-
 
     async def all_flash(self, rgb: RGB, repeat) -> None:
         await self.all_off()
