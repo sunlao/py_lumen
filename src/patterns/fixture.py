@@ -28,10 +28,12 @@ class Pattern:
                 self.array.strip.show()
                 await sleep(delay)
 
-    async def chase_multi(self, fixture: Fixture, colors: ColorGroup, delay: float) -> None:
+    async def chase_multi(
+        self, fixture: Fixture, colors: ColorGroup, delay: float
+    ) -> None:
         leds = [l for l in range(fixture.leds.start, fixture.leds.stop)]
         palette = [c for c in colors.collection]
-        spacing = max(1, int((len(leds) // len(colors.collection)) * .6))
+        spacing = max(1, int((len(leds) // len(colors.collection)) * 0.6))
         chasers = [{"position": 0, "color": palette[0]}]
         async with fixture.lock:
             for lead_step in range(len(leds)):

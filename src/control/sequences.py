@@ -24,7 +24,6 @@ class Sequences:
             await self.pattern.chase(fixture, rgb, 0.1)
             await self.small_off()
 
-
     async def _big_chase(self) -> None:
         await self.pattern.activate(self.big, self.off)
         tasks = [
@@ -43,8 +42,7 @@ class Sequences:
         await self.all_off()
         for i in range(repeat):
             tasks = [
-                create_task(self.pattern.flash(f, rgb, 0.025))
-                for f in self.fixtures
+                create_task(self.pattern.flash(f, rgb, 0.025)) for f in self.fixtures
             ]
             for t in tasks:
                 await t
@@ -62,12 +60,9 @@ class Sequences:
     async def all_shuffle(self, rgb: RGB, repeat) -> None:
         await self.all_off()
         for i in range(repeat):
-            task = create_task(
-                self.pattern.shuffle(self.big, rgb, 0.0275)
-            )
+            task = create_task(self.pattern.shuffle(self.big, rgb, 0.0275))
             tasks = [
-                create_task(self.pattern.shuffle(f, rgb, 0.375))
-                for f in self.small
+                create_task(self.pattern.shuffle(f, rgb, 0.375)) for f in self.small
             ]
             tasks.append(task)
             for t in tasks:
@@ -89,7 +84,7 @@ class Sequences:
                 await t
             await self.all_off()
 
-    async def chase (self, rgb: RGB, repeat) -> None:
+    async def chase(self, rgb: RGB, repeat) -> None:
         for i in range(repeat):
             task = create_task(self._big_chase())
             tasks = [create_task(self._small_chase(f, rgb)) for f in self.small]
