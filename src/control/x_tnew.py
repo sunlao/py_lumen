@@ -14,4 +14,4 @@ s = Steps()
 # run(s.all_flash(p.BLUE.rgb, 10))
 # run(s.small_chase(p.BLUE.rgb, 1))
 
-run(s.big_chase(1))
+run(s.big_chase(5))

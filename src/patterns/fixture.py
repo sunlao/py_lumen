@@ -28,26 +28,25 @@ class Pattern:
                 self.array.strip.show()
                 await sleep(delay)
 
-    async def chase_multi(self, fixture: Fixture, colors: ColorGroup, loop_cnt: int, delay: float) -> None:
+    async def chase_multi(self, fixture: Fixture, colors: ColorGroup, delay: float) -> None:
         leds = [l for l in range(fixture.leds.start, fixture.leds.stop)]
         palette = [c for c in colors.collection]
-        spacing = (len(leds) // len(colors.collection)) * .5
-        for _ in range(loop_cnt):
-            chasers = [{"position": 0, "color": palette[0]}]
-            for lead_step in range(len(leds)):
-                if lead_step > 0 and lead_step % spacing == 0:
-                    color = palette[len(chasers) % len(palette)]
-                    chasers.append({"position": 0, "color": color})
-                for chaser in chasers:
-                    rgb = chaser["color"].rgb
-                    led = leds[chaser["position"]]
-                    self.array.strip.setPixelColor(
-                        led,
-                        Color(rgb.red, rgb.green, rgb.blue),
-                    )
-                    chaser["position"] = (chaser["position"] + 1) % len(leds)
-                self.array.strip.show()
-                await sleep(delay)
+        spacing = (len(leds) // len(colors.collection)) * .6
+        chasers = [{"position": 0, "color": palette[0]}]
+        for lead_step in range(len(leds)):
+            if lead_step > 0 and lead_step % spacing == 0:
+                color = palette[len(chasers) % len(palette)]
+                chasers.append({"position": 0, "color": color})
+            for chaser in chasers:
+                rgb = chaser["color"].rgb
+                led = leds[chaser["position"]]
+                self.array.strip.setPixelColor(
+                    led,
+                    Color(rgb.red, rgb.green, rgb.blue),
+                )
+                chaser["position"] = (chaser["position"] + 1) % len(leds)
+            self.array.strip.show()
+            await sleep(delay)
 
     async def flash(self, fixture: Fixture, rgb: RGB, delay: float):
         async with fixture.lock:
