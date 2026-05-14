@@ -19,20 +19,16 @@ class Steps:
         self.fixtures = rack.RINGS.fixtures
 
     async def _small_chase(self, fixture: Fixture, rgb: RGB) -> None:
-        await self.all_off()
-        print("f1")        
-        await self.pattern.chase(fixture, rgb, 0.375)
-        print("f2")
-        await self.all_off()
-        print("f3")
-        await self.pattern.chase(fixture, rgb, 0.375)
-        print("f4")
-        await self.all_off()
+        await self.small_off()
+        for i in range(5):
+            await self.pattern.chase(fixture, rgb, 0.1)
+            await self.small_off()
+ 
 
     async def _big_chase(self) -> None:
-        await self.all_off()
+        await self.pattern.activate(self.big, self.off)
         tasks = [
-            create_task(self.pattern.chase_multi(self.big, self.colors, 0.025))
+            create_task(self.pattern.chase_multi(self.big, self.colors, 0.01))
             for f in self.small
         ]
         for t in tasks:
@@ -101,3 +97,8 @@ class Steps:
             for t in tasks:
                 await t
         await self.all_off()
+
+    async def small_off(self) -> None:
+        tasks = [create_task(self.pattern.activate(f, self.off)) for f in self.small]
+        for t in tasks:
+            await t
