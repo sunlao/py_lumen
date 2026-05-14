@@ -26,12 +26,8 @@ class Sequences:
 
     async def _big_chase(self) -> None:
         await self.pattern.activate(self.big, self.off)
-        tasks = [
-            create_task(self.pattern.chase_multi(self.big, self.colors, 0.01))
-            for f in self.small
-        ]
-        for t in tasks:
-            await t
+        for i in range(2):
+           await self.pattern.chase_multi(self.big, self.colors, 0.01)
 
     async def all_off(self) -> None:
         tasks = [create_task(self.pattern.activate(f, self.off)) for f in self.fixtures]

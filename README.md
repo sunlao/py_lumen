@@ -3,49 +3,67 @@ pythonic light controller via rasberry py for art projects. Designed for WS2812 
 
 ## Modules and Classes
 
-## Patterns
+### Rig
 
-The pattern module are resuable assertions of Leds by `fixtures` and `zones`.  Some examples of patterns are:
+The `rig` module defines the physical lighting installation with the following classes
+
+- `LightArray` creates the `PixelStrip` hardware edge from the WS2812 third party librairy.
+- `Palette` defines reusable color constants and color groups.
+- `Rack` defines the configured fixtures for the installation.
+
+#### Fixtures
+
+A lighting component is called a `Fixture` and . A fixture owns an LED address range and a fixture-level lock.
+
+Fixture locks are used as write policy:
+
+- same fixture = serialized writes
+- different fixtures = concurrent writes
+
+Fixtures can contain `Zones`. Zones are named LED subranges used when patterns need to target part of a fixture.
+
+Current configured fixtures:
+
+- Two 24 Bits WS2812 RGB LED Ring = https://www.amazon.com/dp/B09YTGCRV1
+- One 241 LEDs 9 Rings WS2812B 5050 RGB = https://www.amazon.com/dp/B083VWVP3J
+
+### Patterns
+
+The `patterns` module defines reusable fixture-level light activity.
+
+Patterns write LED values against fixtures or zones. Examples:
 
 - activate
 - flash
 - chase
-- shuffle by color group 
+- chase multi
+- shuffle
+- shuffle by color group
 
-## Control
+Patterns respect fixture locks so concurrent steps can safely target different fixtures.
 
-The Control module asserts led patterns for a `light_rig` class. A light_rig is a class that asserts lighting componets called fixtures (see below). Patterns can organzied into a `steps` class. Steps can be orgnized by the `sequence` class.  A simple sequences may assert a pattern directly. A `scene` is the final class in the controller which is a collection of sequences.  Scenes are what is executed by services. Examples of a simple sequence 
+### Control
 
-- Turn Fixture Off
-- Flash Fixture Single Color
+The `control` module organizes pattern calls into executable Sequences.
 
-Example of complex sequence `Create Target`.
+`Sequences` coordinates patterns across the rack. For example, a chase step can run a big-ring `chase_multi` pattern while the small fixtures run their own chase pattern concurrently.
 
-- Step 1 - Activate 1 zone: "rings 1-3"
-- Step 2 - Activate 2 zones: "rings 1-3" and "rings 4-6" 
-- Step 3 - Activate 3 zones: "rings 1-3", "rings 4-6" and "rings 7-9" 
-- Turn Fixture Off
+A scene is the top-level execution of a collectoin of sequneces.
 
-##  Models
+### Models
 
-Models are stored in `src.models`
+Models are stored in `src.models`.
 
-## Fixtures 
+- `Colors` defines a named RGB color.
+    - `RGB` defines color channel values.
+    - `ColorGroup` defines a tuple of colors.
+- `Fixture` defines a lighting component with LEDs and a lock.
+    - `Zone` defines a named LED subrange.
+    - `Zones` groups related zones.
+    - `Leds` defines a fixture LED range and optional zone groups.
+    - `Fixtures` defines a configured collection of fixtures.
 
-A Lighting component is called a `fixture` and can be grouped by `Fixtures`. A fixture is locked on assertion to ensure only one call can be made it at a time. Current fixtures instantiated in the `src.control.light_rig` class:
-
-- Two 24 Bits WS2812 RGB LED Ring =  https://www.amazon.com/dp/B09YTGCRV1
-- One 241 LEDs 9 Rings WS2812B 5050 RGB = https://www.amazon.com/dp/B083VWVP3J
-
-### Leds and Zones
-
-Fixtures have `LED`s that are numbered and can be organized into `Zones`. 
-
-## Colors 
-
-A `Color` is a specific assertion of `RGB`.  A collection colors can be grouped into a `ColorGroup` 
-
-# Run
+## Run
 
 rpi-ws281x requires root level priveleges access.
 
@@ -55,13 +73,12 @@ run scene manually
 run color tune manually
  - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m control.color_tune 
 
-
-## Startup service
+### Startup service
 
 - sudo nano /etc/systemd/system/py_lumen.service
 - sudo nano /etc/systemd/system/py_lumen_audio.service
 
-## Service Commands
+### Service Commands
 
 - sudo systemctl enable py_lumen_audio
 - sudo systemctl enable py_lumen.service
@@ -72,10 +89,10 @@ run color tune manually
 - sudo systemctl stop py_lumen_audio
 - sudo systemctl stop py_lumen.service
 
-# Testing
+## Testing
 Tox runs executes testing activities using the 'tox.ini'.  All testing tools reference use the 'tox.ini' to manage their configs.
 
-## Formatting, Linting, and Code Style
+### Formatting, Linting, and Code Style
 
 Tox executes the following commands:
 
@@ -88,11 +105,11 @@ pycodestyle src tests
 
 The goal is to maintain PEP 8 compliance and Python best practices. We use Make to orchestrate CI execution in GitHub Actions. GitHub Actions will automatically apply any black formatting changes as part of a run.
 
-## Execution
+### Execution
 
 Test are executed by pytest and stored in `/tests/pytest`. Pytest uses with fixtures stored in `/tests/fixtures` and managed by `/tests/conftest.py`. Code coveage is performed by module `coverage` and used when pytest is executed by tox. 
 
-# Virtual Environments
+## Virtual Environments
 
 ```bash
 python -m venv .venv
@@ -102,7 +119,7 @@ pip install -r requirements.txt
 pip install -r requirements-test.txt
 ```
 
-# System Environment Variables
+## System Environment Variables
 
 ```bash
 export PYTHONPATH={path}/py_lumen/src:$PYTHONPATH
