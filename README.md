@@ -7,13 +7,13 @@ pythonic light controller via rasberry py for art projects. Designed for WS2812 
 
 The `rig` module defines the physical lighting installation with the following classes
 
-- `LightArray` creates the `PixelStrip` hardware edge from the WS2812 third party librairy.
+- `LightArray` creates the `PixelStrip` hardware edge from the rpi-ws281x third party librairy.
 - `Palette` defines reusable color constants and color groups.
 - `Rack` defines the configured fixtures for the installation.
 
 #### Fixtures
 
-A lighting component is called a `Fixture` and . A fixture owns an LED address range and a fixture-level lock.
+A lighting component is called a `Fixture`. A fixture owns an LED address range and a fixture-level lock.
 
 Fixture locks are used as write policy:
 
@@ -44,15 +44,15 @@ Patterns respect fixture locks so concurrent steps can safely target different f
 
 ### Control
 
-The `control` module organizes pattern calls into executable Sequences.
+The `control` module organizes pattern calls into executable `Sequences`.  
 
-`Sequences` coordinates patterns across the rack. For example, a chase step can run a big-ring `chase_multi` pattern while the small fixtures run their own chase pattern concurrently.
+Sequences step through patterns across the rack. For example, a chase step can run a big-ring `chase_multi` pattern while the small fixtures run their own chase pattern concurrently.
 
-A scene is the top-level execution of a collectoin of sequneces.
+A scene is the top-level execution of a collectionn of sequneces orgizned for execution by the OS services. 
 
 ### Models
 
-Models are stored in `src.models`.
+Models are stored in `src.models`. They are frozen pydantic models for sharing data across classes.
 
 - `Colors` defines a named RGB color.
     - `RGB` defines color channel values.
@@ -105,10 +105,6 @@ pycodestyle src tests
 ```
 
 The goal is to maintain PEP 8 compliance and Python best practices. We use Make to orchestrate CI execution in GitHub Actions. GitHub Actions will automatically apply any black formatting changes as part of a run.
-
-### Execution
-
-Test are executed by pytest and stored in `/tests/pytest`. Pytest uses with fixtures stored in `/tests/fixtures` and managed by `/tests/conftest.py`. Code coveage is performed by module `coverage` and used when pytest is executed by tox. 
 
 ## Virtual Environments
 

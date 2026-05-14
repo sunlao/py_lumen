@@ -1,12 +1,6 @@
-anybadge
 bandit
 black
-coverage==7.10.7
-coverage-badge
-genbadge[coverage]
 pylint
 pycodestyle
-pytest
-pytest-asyncio
 pip-audit
 tox

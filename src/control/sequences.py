@@ -20,14 +20,14 @@ class Sequences:
 
     async def _small_chase(self, fixture: Fixture, rgb: RGB) -> None:
         await self.small_off()
-        for i in range(5):
+        for _ in range(5):
             await self.pattern.chase(fixture, rgb, 0.1)
             await self.small_off()
 
     async def _big_chase(self) -> None:
         await self.pattern.activate(self.big, self.off)
-        for i in range(2):
-           await self.pattern.chase_multi(self.big, self.colors, 0.01)
+        for _ in range(2):
+            await self.pattern.chase_multi(self.big, self.colors, 0.01)
 
     async def all_off(self) -> None:
         tasks = [create_task(self.pattern.activate(f, self.off)) for f in self.fixtures]
@@ -36,7 +36,7 @@ class Sequences:
 
     async def all_flash(self, rgb: RGB, repeat) -> None:
         await self.all_off()
-        for i in range(repeat):
+        for _ in range(repeat):
             tasks = [
                 create_task(self.pattern.flash(f, rgb, 0.025)) for f in self.fixtures
             ]
@@ -45,7 +45,7 @@ class Sequences:
 
     async def all_flash_by_color_group(self, repeat) -> None:
         await self.all_off()
-        for i in range(repeat):
+        for _ in range(repeat):
             tasks = [
                 create_task(self.pattern.flash_by_cologroup(f, self.colors, 0.025))
                 for f in self.fixtures
@@ -55,7 +55,7 @@ class Sequences:
 
     async def all_shuffle(self, rgb: RGB, repeat) -> None:
         await self.all_off()
-        for i in range(repeat):
+        for _ in range(repeat):
             task = create_task(self.pattern.shuffle(self.big, rgb, 0.0275))
             tasks = [
                 create_task(self.pattern.shuffle(f, rgb, 0.375)) for f in self.small
@@ -67,7 +67,7 @@ class Sequences:
 
     async def all_shuffle_by_color_group(self, repeat) -> None:
         await self.all_off()
-        for i in range(repeat):
+        for _ in range(repeat):
             task = create_task(
                 self.pattern.shuffle_by_cologroup(self.big, self.colors, 0.0275)
             )
@@ -81,7 +81,7 @@ class Sequences:
             await self.all_off()
 
     async def chase(self, rgb: RGB, repeat) -> None:
-        for i in range(repeat):
+        for _ in range(repeat):
             task = create_task(self._big_chase())
             tasks = [create_task(self._small_chase(f, rgb)) for f in self.small]
             tasks.append(task)

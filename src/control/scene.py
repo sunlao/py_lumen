@@ -1,4 +1,3 @@
-from time import sleep
 from control.sequences import Sequences
 from rig.palette import Palette
 

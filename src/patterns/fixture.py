@@ -31,8 +31,8 @@ class Pattern:
     async def chase_multi(
         self, fixture: Fixture, colors: ColorGroup, delay: float
     ) -> None:
-        leds = [l for l in range(fixture.leds.start, fixture.leds.stop)]
-        palette = [c for c in colors.collection]
+        leds = list(range(fixture.leds.start, fixture.leds.stop))
+        palette = list(colors.collection)
         spacing = max(1, int((len(leds) // len(colors.collection)) * 0.6))
         chasers = [{"position": 0, "color": palette[0]}]
         async with fixture.lock:
@@ -82,7 +82,7 @@ class Pattern:
 
     async def shuffle(self, fixture: Fixture, rgb: RGB, delay: float):
         async with fixture.lock:
-            leds = [l for l in range(fixture.leds.start, fixture.leds.stop)]
+            leds = list(range(fixture.leds.start, fixture.leds.stop))
             shuffle(leds)
             for led in leds:
                 self.array.strip.setPixelColor(led, Color(rgb.red, rgb.green, rgb.blue))
@@ -93,7 +93,7 @@ class Pattern:
         self, fixture: Fixture, colors: ColorGroup, delay: float
     ):
         async with fixture.lock:
-            leds = [l for l in range(fixture.leds.start, fixture.leds.stop)]
+            leds = list(range(fixture.leds.start, fixture.leds.stop))
             shuffle(leds)
             for led in leds:
                 rgbs = [c.rgb for c in colors.collection]

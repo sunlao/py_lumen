@@ -1,6 +1,6 @@
+from asyncio import Lock
 from pydantic import BaseModel, Field
 from models.policy import DTOConfig, DTOModuleConfig
-from asyncio import Lock
 
 
 class Zone(BaseModel):
