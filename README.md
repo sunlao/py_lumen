@@ -68,7 +68,7 @@ Models are stored in `src.models`.
 rpi-ws281x requires root level priveleges access.
 
 run scene manually
- - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m control.scene 
+ - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m exe
 
 run color tune manually
  - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m control.color_tune 
@@ -88,6 +88,7 @@ run color tune manually
 - sudo systemctl start py_lumen.service
 - sudo systemctl stop py_lumen_audio
 - sudo systemctl stop py_lumen.service
+- sudo systemctl daemon-reload
 
 ## Testing
 Tox runs executes testing activities using the 'tox.ini'.  All testing tools reference use the 'tox.ini' to manage their configs.
