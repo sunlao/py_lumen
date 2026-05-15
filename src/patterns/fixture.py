@@ -3,17 +3,14 @@ from random import shuffle
 from rpi_ws281x import Color
 from models.colors import RGB, ColorGroup
 from models.fixtures import Fixture
-from rig.light_array import LightArray
-from rig.palette import Palette
 
 
 class Pattern:
 
-    def __init__(self) -> None:
-        p = Palette
+    def __init__(self, light_array, palette) -> None:
+        p = palette
         self.off = p.OFF.rgb
-        self.array = LightArray()
-        self.array.start()
+        self.array = light_array
 
     async def activate(self, fixture: Fixture, rgb: RGB):
         async with fixture.lock:
