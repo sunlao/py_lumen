@@ -1,5 +1,5 @@
 # Overview
-pythonic light controller via rasberry py for art projects. Designed for WS2812 LED usage via the module rpi-ws281x 
+Pythonic light controller via rasberry py for art projects. Designed for WS2812 LED usage via the module rpi-ws281x 
 
 ## Modules and Classes
 
