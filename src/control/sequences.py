@@ -96,22 +96,32 @@ class Sequences:
         for t in tasks:
             await t
 
-    async def zone_single_activate_low_high(self, colors: ColorGroup, repeat, delay: float) -> None:
+    async def zone_single_activate_low_high(
+        self, colors: ColorGroup, repeat, delay: float
+    ) -> None:
         for _ in range(repeat):
             await self.f_pattern.activate(self.big, self.off)
             await sleep(delay)
             zones = next(z.group for z in self.big.leds.zones if z.name == "single")
-            await self.z_pattern.activate_zones_shuffle_color(self.big, zones, colors, delay)
+            await self.z_pattern.activate_zones_shuffle_color(
+                self.big, zones, colors, delay
+            )
 
-    async def zone_single_activate_high_low(self, colors: ColorGroup, repeat, delay: float) -> None:
+    async def zone_single_activate_high_low(
+        self, colors: ColorGroup, repeat, delay: float
+    ) -> None:
         for _ in range(repeat):
             await self.f_pattern.activate(self.big, self.off)
             await sleep(delay)
             zones = next(z.group for z in self.big.leds.zones if z.name == "single")
             zones = sorted(zones, key=lambda z: z.ordinal, reverse=True)
-            await self.z_pattern.activate_zones_shuffle_color(self.big, zones, colors, delay)
+            await self.z_pattern.activate_zones_shuffle_color(
+                self.big, zones, colors, delay
+            )
 
-    async def zone_single_activate_random(self, colors: ColorGroup, repeat: int, delay: float) -> None:
+    async def zone_single_activate_random(
+        self, colors: ColorGroup, repeat: int, delay: float
+    ) -> None:
         for _ in range(repeat):
             await self.f_pattern.activate(self.big, self.off)
             await sleep(delay)
@@ -119,11 +129,13 @@ class Sequences:
                 next(z.group for z in self.big.leds.zones if z.name == "single")
             )
             shuffle(zones)
-            await self.z_pattern.activate_zones_shuffle_color(self.big, zones, colors, delay)
+            await self.z_pattern.activate_zones_shuffle_color(
+                self.big, zones, colors, delay
+            )
 
     async def zone_three_activate_low_high(
-            self, colors: ColorGroup, repeat, delay: float
-        ) -> None:
+        self, colors: ColorGroup, repeat, delay: float
+    ) -> None:
         for _ in range(repeat):
             await self.f_pattern.activate(self.big, self.off)
             await sleep(delay)
@@ -131,8 +143,8 @@ class Sequences:
             await self.z_pattern.activate_zones(self.big, zones, colors, delay)
 
     async def zone_three_activate_high_low(
-            self, colors: ColorGroup, repeat, delay: float
-        ) -> None:
+        self, colors: ColorGroup, repeat, delay: float
+    ) -> None:
         for _ in range(repeat):
             await self.f_pattern.activate(self.big, self.off)
             await sleep(delay)
