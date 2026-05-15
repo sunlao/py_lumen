@@ -14,6 +14,8 @@ class ZonePattern:
 
     @staticmethod
     def _random_rgb(colors: ColorGroup, previous: RGB) -> RGB:
+        if len(colors.collection) == 1:
+            return colors.collection[0].rgb
         color = choice(colors.collection)
         while color.rgb == previous:
             color = choice(colors.collection)
