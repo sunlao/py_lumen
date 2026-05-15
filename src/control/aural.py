@@ -14,7 +14,6 @@ def volume() -> None:
             check=True,
         )
         if result.returncode == 0:
-            print(f"volume set using: {c}")
             return
 
 
