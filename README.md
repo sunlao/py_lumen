@@ -1,5 +1,5 @@
 # Overview
-Pythonic light controller via rasberry py for art projects. Designed for WS2812 LED usage via the module rpi-ws281x 
+Pythonic light controller via raspberry py for art projects. Designed for WS2812 LED usage via the module rpi-ws281x 
 
 ## Modules and Classes
 
@@ -7,7 +7,7 @@ Pythonic light controller via rasberry py for art projects. Designed for WS2812 
 
 The `rig` module defines the physical lighting installation with the following classes
 
-- `LightArray` creates the `PixelStrip` hardware edge from the rpi-ws281x third party librairy.
+- `LightArray` creates the `PixelStrip` hardware edge from the rpi-ws281x third party library.
 - `Palette` defines reusable color constants and color groups.
 - `Rack` defines the configured fixtures for the installation.
 
@@ -48,7 +48,7 @@ The `control` module organizes pattern calls into executable `Sequences`.
 
 Sequences step through patterns across the rack. For example, a chase step can run a big-ring `chase_multi` pattern while the small fixtures run their own chase pattern concurrently.
 
-A scene is the top-level execution of a collectionn of sequneces orgizned for execution by the OS services. 
+A scene is the top-level execution of a collection of sequences organized for execution by the OS services. 
 
 ### Models
 
@@ -65,7 +65,7 @@ Models are stored in `src.models`. They are frozen pydantic models for sharing d
 
 ## Run
 
-rpi-ws281x requires root level priveleges access.
+rpi-ws281x requires root level privileges access.
 
 run scene manually
  - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m exe

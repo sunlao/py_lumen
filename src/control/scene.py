@@ -22,7 +22,7 @@ class Scene:
             )
         )
 
-    async def exceute(self) -> None:
+    async def execute(self) -> None:
         await self.s.all_shuffle_by_color_group(self.colors, 2)
         await self.s.all_shuffle(self.palette.PURPLE.rgb, 2)
         await self.s.all_flash_by_color_group(self.colors, 2)
