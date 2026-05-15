@@ -8,7 +8,10 @@ def volume() -> None:
     controls = ["PCM", "Headphone"]
     for c in controls:
         result = run(
-            ["amixer", "-c", "2", "set", c, "100%"], capture_output=True, text=True
+            ["amixer", "-c", "2", "set", c, "100%"],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         if result.returncode == 0:
             print(f"volume set using: {c}")

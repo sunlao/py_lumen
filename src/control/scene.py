@@ -9,8 +9,9 @@ class Scene:
         self.p = Palette()
 
     async def exceute(self) -> None:
-        await self.s.all_shuffle_by_color_group(2)
-        await self.s.all_shuffle(self.p.BLUE.rgb, 2)
-        await self.s.all_flash_by_color_group(2)
-        await self.s.all_flash(self.p.BLUE.rgb, 10)
-        await self.s.chase(self.p.BLUE.rgb, 2)
+        # await self.s.all_shuffle_by_color_group(2)
+        # await self.s.all_shuffle(self.p.BLUE.rgb, 2)
+        # await self.s.all_flash_by_color_group(2)
+        # await self.s.all_flash(self.p.BLUE.rgb, 10)
+        # await self.s.chase(self.p.BLUE.rgb, 2)
+        await self.s.zone_single_activate_low_high(1)
