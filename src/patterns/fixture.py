@@ -5,7 +5,7 @@ from models.colors import RGB, ColorGroup
 from models.fixtures import Fixture
 
 
-class Pattern:
+class FixturePattern:
 
     def __init__(self, light_array, palette) -> None:
         p = palette

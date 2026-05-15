@@ -5,7 +5,7 @@ from models.colors import RGB, ColorGroup
 from models.fixtures import Fixture, Zones
 
 
-class Pattern:
+class ZonePattern:
 
     def __init__(self, light_array, palette) -> None:
         p = palette
@@ -20,6 +20,22 @@ class Pattern:
         return color.rgb
 
     async def activate_zones(
+        self, fixture: Fixture, zones: Zones, colors: ColorGroup, delay: float
+    ) -> None:
+        index = 0
+        async with fixture.lock:
+            for zone in zones:
+                rgb = colors.collection[index % len(colors.collection)].rgb
+                index += 1
+                for led in range(zone.start, zone.stop):
+                    self.array.strip.setPixelColor(
+                        led,
+                        Color(rgb.red, rgb.green, rgb.blue),
+                    )
+                self.array.strip.show()
+                await sleep(delay)
+
+    async def activate_zones_shuffle_color(
         self, fixture: Fixture, zones: Zones, colors: ColorGroup, delay: float
     ) -> None:
         previous = None

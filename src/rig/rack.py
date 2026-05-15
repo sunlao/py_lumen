@@ -38,7 +38,7 @@ class Rack:
                     ),
                 ),
                 Zones(
-                    name="Three",
+                    name="three",
                     description="Three Ring Zones ",
                     group=(
                         Zone(name="Ring1-3", ordinal=1, start=48, stop=196),

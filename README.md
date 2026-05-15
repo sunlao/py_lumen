@@ -98,13 +98,21 @@ Tox runs executes testing activities using the 'tox.ini'.  All testing tools ref
 Tox executes the following commands:
 
 ```bash
-black src tests
+black src
 pylint --rcfile=tox.ini src
-pylint --rcfile=tox.ini --disable=C0103 tests
-pycodestyle src tests
+pycodestyle src
 ```
 
 The goal is to maintain PEP 8 compliance and Python best practices. We use Make to orchestrate CI execution in GitHub Actions. GitHub Actions will automatically apply any black formatting changes as part of a run.
+
+### Security Safety
+
+Tox executes the following commands:
+
+```bash
+bandit -r src
+pip-audit -r requirements.txt
+```
 
 ## Virtual Environments
 
@@ -121,5 +129,4 @@ pip install -r requirements-test.txt
 ```bash
 export PYTHONPATH={path}/py_lumen/src:$PYTHONPATH
 export PYTHONPATH={path}/py_lumen/tests:$PYTHONPATH
-export ENV=prod
 ```
