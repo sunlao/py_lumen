@@ -16,7 +16,6 @@ def volume() -> None:
         if result.returncode == 0:
             print(f"volume set using: {c}")
             return
-    print("no matching mixer control found")
 
 
 def play() -> None:
