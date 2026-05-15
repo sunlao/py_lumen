@@ -1,5 +1,5 @@
 from asyncio import sleep
-from random import choice, shuffle
+from random import choice
 from rpi_ws281x import Color
 from models.colors import RGB, ColorGroup, Colors
 from models.fixtures import Fixture, Zones
@@ -23,7 +23,7 @@ class Pattern:
         return color.rgb
 
     async def activate_zones(
-            self, fixture: Fixture, zones: Zones, colors: ColorGroup, 
+            self, fixture: Fixture, zones: Zones, colors: ColorGroup, delay: int
         ) -> None:
         previous = None
         async with fixture.lock:
@@ -36,4 +36,5 @@ class Pattern:
                         Color(rgb.red, rgb.green, rgb.blue),
                     )
                 self.array.strip.show()
+                await sleep(delay)
 

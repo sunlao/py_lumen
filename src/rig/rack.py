@@ -23,7 +23,7 @@ class Rack:
             stop=289,
             zones=(
                 Zones(
-                    name="Single",
+                    name="single",
                     description="Single Ring Zones ",
                     group=(
                         Zone(name="Ring1", ordinal=1, start=48, stop=108),

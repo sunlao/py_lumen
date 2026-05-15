@@ -1,3 +1,4 @@
+from asyncio import sleep
 from control.sequences import Sequences
 from rig.palette import Palette
 
@@ -14,4 +15,6 @@ class Scene:
         # await self.s.all_flash_by_color_group(2)
         # await self.s.all_flash(self.p.BLUE.rgb, 10)
         # await self.s.chase(self.p.BLUE.rgb, 2)
-        await self.s.zone_single_activate_low_high(1)
+        await self.s.zone_single_activate_low_high(2, .5)
+        # await self.s.zone_single_activate_high_low(2, .5)
+        # await self.s.zone_single_activate_random(2, .5)

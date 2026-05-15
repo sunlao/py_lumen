@@ -1,4 +1,5 @@
-from asyncio import create_task
+from asyncio import create_task, sleep
+from random import shuffle
 from models.colors import RGB
 from models.fixtures import Fixture
 from patterns.fixture import Pattern
@@ -96,19 +97,25 @@ class Sequences:
         for t in tasks:
             await t
 
-    async def zone_single_activate_low_high(self, repeat) -> None:
+    async def zone_single_activate_low_high(self, repeat, delay: int) -> None:
         for _ in range(repeat):
+            await self.pattern.activate(self.big, self.off)
+            await sleep(delay)
             zones = next(z.group for z in self.big.leds.zones if z.name == "single")
-            await self.z_pattern.activate_zones(self.big, zones, self.colors)
+            await self.z_pattern.activate_zones(self.big, zones, self.colors, delay)
 
-    async def zone_single_activate_high_low(self, repeat) -> None:
+    async def zone_single_activate_high_low(self, repeat, delay: int) -> None:
         for _ in range(repeat):
+            # await self.pattern.activate(self.big, self.off)
+            await sleep(delay)
             zones = next(z.group for z in self.big.leds.zones if z.name == "single")
             zones = sorted(zones, key=lambda z: z.ordinal, reverse=True)
-            await self.z_pattern.activate_zones(self.big, zones, self.colors)
+            await self.z_pattern.activate_zones(self.big, zones, self.colors, delay)
 
-    async def zone_single_activate_random(self, repeat) -> None:
+    async def zone_single_activate_random(self, repeat: int, delay: int) -> None:
         for _ in range(repeat):
+            # await self.pattern.activate(self.big, self.off)
+            await sleep(delay)
             zones = list(next(z.group for z in self.big.leds.zones if z.name == "single"))
             shuffle(zones)
-            await self.z_pattern.activate_zones(self.big, zones, self.colors)
+            await self.z_pattern.activate_zones(self.big, zones, self.colors, delay)
