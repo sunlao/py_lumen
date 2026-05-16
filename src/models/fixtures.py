@@ -17,20 +17,22 @@ class Zones(BaseModel):
     description: str
     group: tuple[Zone, ...]
 
+class ColorSet(BaseModel):
+    model_config = DTOModuleConfig
+    ordinal: int = Field(gt=0)
+    leds: tuple[int, ...]
 
 class Frame(BaseModel):
     model_config = DTOModuleConfig
     name: str
     ordinal: int = Field(gt=0)
-    leds: tuple[int, ...]
-
+    color_sets: tuple[ColorSet, ...]
 
 class Gobo(BaseModel):
     model_config = DTOModuleConfig
     name: str
     description: str
-    group: tuple[Frame, ...]
-
+    frames: tuple[Frame, ...]
 
 class Leds(BaseModel):
     model_config = DTOConfig

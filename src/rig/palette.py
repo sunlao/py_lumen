@@ -1,5 +1,4 @@
-from models.colors import Colors, RGB, ColorGroup
-
+from models.colors import Colors, RGB, ColorGroup, FrameColorSets, FrameColorSet, ColorMap
 
 class Palette:
 
@@ -15,4 +14,25 @@ class Palette:
     BLUE = Colors(name="BLUE", ordinal=9, rgb=RGB(red=0, green=0, blue=255))
     COLORS = ColorGroup(
         collection=(PURPLE, RED, CYAN, GREEN, YELLOW, ORANGE, PINK, BLUE)
+    )
+
+    EYE_FRAME_COLOR_SET = FrameColorSets(
+        frame_color_sets=(
+            FrameColorSet(
+                name="CloseEye1",
+                color_maps=(ColorMap(ordinal=1, rgb=PINK.rgb),),
+            ),
+            FrameColorSet(
+                name="OpenEye",
+                color_maps=(
+                    ColorMap(ordinal=1, rgb=PURPLE.rgb),
+                    ColorMap(ordinal=2, rgb=RED.rgb),
+                    ColorMap(ordinal=3, rgb=BLUE.rgb),
+                ),
+            ),       
+            FrameColorSet(
+                name="CloseEye2",
+                color_maps=(ColorMap(ordinal=1, rgb=GREEN.rgb),),
+            ),
+        ),                 
     )

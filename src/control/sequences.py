@@ -1,6 +1,6 @@
 from asyncio import create_task, sleep
 from random import shuffle
-from models.colors import RGB, ColorGroup
+from models.colors import RGB, ColorGroup, FrameColorSets
 from models.fixtures import Fixture
 from patterns.fixture import FixturePattern
 from patterns.zone import ZonePattern
@@ -154,10 +154,10 @@ class Sequences:
             zones = sorted(zones, key=lambda z: z.ordinal, reverse=True)
             await self.z_pattern.activate_zones(self.big, zones, colors, delay)
 
-    async def gobo_winking_eye(self, rgb: RGB, repeat, delay: float) -> None:
+    async def gobo_winking_eye(self, frame_color_sets: FrameColorSets, repeat, delay: float) -> None:
         eye = next(g for g in self.big.leds.gobos if g.name == "eye")
         await self.f_pattern.activate(self.big, self.off)
         for _ in range(repeat):
-            for frame in eye.group:
-                await self.g_pattern.activate_frame(self.big, frame, rgb, delay)
+            for frame in eye.frames:
+                await self.g_pattern.activate_frame(self.big, frame, frame_color_sets, delay)
                 await self.f_pattern.activate(self.big, self.off)
