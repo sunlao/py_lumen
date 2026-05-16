@@ -155,12 +155,11 @@ class Sequences:
             await self.z_pattern.activate_zones(self.big, zones, colors, delay)
 
     async def gobo_winking_eye(self, rgb: RGB, repeat, delay: float) -> None:
+        eye = next(g for g in self.big.leds.gobos if g.name == "eye")
         for _ in range(repeat):
             await self.f_pattern.activate(self.big, self.off)
             await sleep(delay)
-            zones = next(z.group for z in self.big.leds.zones if z.name == "three")
-            zones = sorted(zones, key=lambda z: z.ordinal, reverse=True)
-            for frame in self.big.leds.gobo.group:
+            for frame in eye.group:
                 await self.g_pattern.activate_frame(self.big, frame, rgb, delay)
                 await sleep(delay)
                 await self.f_pattern.activate(self.big, self.off)

@@ -21,7 +21,7 @@ class Rack:
     BIG = Fixture(
         name="big",
         description="Big Circle",
-        leds=Leds(start=48, stop=289, gobos=(EYE), zones=(SINGLE, THREE)),
+        leds=Leds(start=48, stop=289, gobos=(EYE,), zones=(SINGLE, THREE)),
         lock=Lock(),
     )
 
