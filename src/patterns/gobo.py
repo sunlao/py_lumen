@@ -1,7 +1,7 @@
 from asyncio import sleep
 from rpi_ws281x import Color
 from models.colors import RGB
-from models.fixtures import Fixture, Zones, Frame
+from models.fixtures import Fixture, Frame
 
 
 class GoboPattern:
