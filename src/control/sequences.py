@@ -4,6 +4,7 @@ from models.colors import RGB, ColorGroup
 from models.fixtures import Fixture
 from patterns.fixture import FixturePattern
 from patterns.zone import ZonePattern
+from patterns.gobo import GoboPattern
 from rig.rack import Rack
 
 
@@ -13,6 +14,7 @@ class Sequences:
         self.off = palette.OFF.rgb
         self.f_pattern = FixturePattern(light_array, palette)
         self.z_pattern = ZonePattern(light_array, palette)
+        self.g_pattern = GoboPattern(light_array, palette)
         rack = Rack()
         self.big = rack.BIG
         self.small = [rack.SMF, rack.SMB]
@@ -151,3 +153,14 @@ class Sequences:
             zones = next(z.group for z in self.big.leds.zones if z.name == "three")
             zones = sorted(zones, key=lambda z: z.ordinal, reverse=True)
             await self.z_pattern.activate_zones(self.big, zones, colors, delay)
+
+    async def gobo_winking_eye(self, rgb: RGB, repeat, delay: float) -> None:
+        for _ in range(repeat):
+            await self.f_pattern.activate(self.big, self.off)
+            await sleep(delay)
+            zones = next(z.group for z in self.big.leds.zones if z.name == "three")
+            zones = sorted(zones, key=lambda z: z.ordinal, reverse=True)
+            for frame in self.big.leds.gobo.group:
+                await self.g_pattern.activate_frame(self.big, frame, rgb, delay)
+                await sleep(delay)
+                await self.f_pattern.activate(self.big, self.off)
