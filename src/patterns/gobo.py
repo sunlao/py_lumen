@@ -14,6 +14,7 @@ class GoboPattern:
     async def activate_frame(
         self, fixture: Fixture, frame: Frame, rgb: RGB, delay: float
     ) -> None:
+        # pylint: disable=duplicate-code
         async with fixture.lock:
             for led in frame.leds:
                 self.array.strip.setPixelColor(

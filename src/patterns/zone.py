@@ -45,6 +45,7 @@ class ZonePattern:
             for zone in zones:
                 rgb = self._random_rgb(colors, previous)
                 previous = rgb
+                # pylint: disable=duplicate-code
                 for led in range(zone.start, zone.stop):
                     self.array.strip.setPixelColor(
                         led,
