@@ -71,9 +71,6 @@ rpi-ws281x requires root level privileges access.
 run scene manually
  - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m exe
 
-run color tune manually
- - sudo env PYTHONPATH=/home/cp/git/py_lumen/src   /home/cp/git/py_lumen/.venv/bin/python -m control.color_tune 
-
 ### Startup service
 
 - sudo nano /etc/systemd/system/py_lumen.service

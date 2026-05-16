@@ -9,7 +9,7 @@ class GoboPattern:
     def __init__(self, light_array, palette) -> None:
         p = palette
         self.off = p.OFF.rgb
-        self.array = light_arraycp 
+        self.array = light_array
 
     async def activate_frame(
         self, fixture: Fixture, frame: Frame, frame_color_sets: FrameColorSets, delay: float
