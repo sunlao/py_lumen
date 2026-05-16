@@ -36,7 +36,7 @@ class Leds(BaseModel):
     model_config = DTOConfig
     start: int = Field(ge=0)
     stop: int = Field(gt=0)
-    gobo: Gobo | None = None
+    gobos: tuple[Gobo, ...] | None = None
     zones: tuple[Zones, ...] | None = None
 
 
