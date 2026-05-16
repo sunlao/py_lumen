@@ -158,7 +158,6 @@ class Sequences:
         eye = next(g for g in self.big.leds.gobos if g.name == "eye")
         await self.f_pattern.activate(self.big, self.off)
         for _ in range(repeat):
-            await sleep(delay)
             for frame in eye.group:
                 await self.g_pattern.activate_frame(self.big, frame, rgb, delay)
                 await self.f_pattern.activate(self.big, self.off)

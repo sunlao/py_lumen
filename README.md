@@ -58,10 +58,11 @@ Models are stored in `src.models`. They are frozen pydantic models for sharing d
     - `RGB` defines color channel values.
     - `ColorGroup` defines a tuple of colors.
 - `Fixture` defines a lighting component with LEDs and a lock.
-    - `Zone` defines a named LED subrange.
-    - `Zones` groups related zones.
-    - `Leds` defines a fixture LED range and optional zone groups.
     - `Fixtures` defines a configured collection of fixtures.
+    - `Leds` defines a fixture LED range and optional zone and gobo groups.
+    - `Zone` defines a named LED subrange.
+    - `Gobo` collection frames to make moving patterns
+    - `Frame` collection of led's that make a specific pattern for a gobo
 
 ## Run
 
