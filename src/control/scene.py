@@ -33,5 +33,5 @@ class Scene:
         # await self.s.zone_single_activate_random(self.colors, 3, 0.1)
         # await self.s.zone_three_activate_low_high(self._colors_top3(), 3, 0.5)
         # await self.s.zone_three_activate_high_low(self._colors_top3(), 3, 0.5)
-        await self.s.gobo_winking_eye(self.palette.EYE_FRAME_COLOR_SET, 8, 5)
+        await self.s.gobo_winking_eye(self.palette.EYE_FRAME_COLOR_SET, 8, 3)
         await self.s.all_off()
