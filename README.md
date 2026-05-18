@@ -88,6 +88,10 @@ run scene manually
 - sudo systemctl stop py_lumen.service
 - sudo systemctl daemon-reload
 
+## Support 
+
+Use `support/py_lumen_gobo_mapper.html` locally as a way to manully generate tuples to be used for gobo frames.
+
 ## Testing
 Tox runs executes testing activities using the 'tox.ini'.  All testing tools reference use the 'tox.ini' to manage their configs.
 
