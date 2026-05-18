@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Py Lumen Big Ring Gobo Mapper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #111;
+      --panel: #1b1b1b;
+      --text: #e8e8e8;
+      --muted: #a8a8a8;
+      --led-off: #2f2f2f;
+      --led-on: #f5f0c8;
+      --led-stroke: #666;
+      --accent: #9ecbff;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(520px, 1fr) 420px;
+      gap: 16px;
+      padding: 16px;
+      box-sizing: border-box;
+      height: 100vh;
+    }
+
+    .board-wrap, .controls {
+      background: var(--panel);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    .board-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 600px;
+    }
+
+    svg {
+      max-width: 100%;
+      max-height: calc(100vh - 64px);
+      background: #080808;
+      border-radius: 50%;
+    }
+
+    .ring-guide {
+      fill: none;
+      stroke: #222;
+      stroke-width: 1;
+    }
+
+    .axis {
+      stroke: #252525;
+      stroke-width: 1;
+    }
+
+    .led {
+      fill: var(--led-off);
+      stroke: var(--led-stroke);
+      stroke-width: 0.7;
+      cursor: pointer;
+    }
+
+    .led.selected {
+      fill: var(--led-on);
+      stroke: #fff7b0;
+      stroke-width: 1.2;
+      filter: drop-shadow(0 0 5px #fff2a8);
+    }
+
+    .led:hover {
+      stroke: var(--accent);
+      stroke-width: 2;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 650;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.4;
+      margin: 8px 0 14px;
+      font-size: 14px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      box-sizing: border-box;
+      background: #0b0b0b;
+      color: var(--text);
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      resize: vertical;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    button {
+      background: #2b2b2b;
+      color: var(--text);
+      border: 1px solid #555;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      background: #0b0b0b;
+      color: var(--text);
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .selected-info {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      color: var(--accent);
+      min-height: 22px;
+    }
+
+    @media (max-width: 980px) {
+      main {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .board-wrap {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="board-wrap">
+    <svg id="board" viewBox="-130 -130 260 260" aria-label="241 LED 9-ring board"></svg>
+  </section>
+
+  <section class="controls">
+    <h1>Py Lumen Big Ring Gobo Mapper</h1>
+    <p>
+      Click LEDs to toggle them. Output is a Python tuple using your big-ring physical addresses
+      <code>48..288</code>. The canvas assumes nine evenly spaced concentric rings and zero-phase at
+      the closed-eye horizontal spoke.
+    </p>
+
+    <div class="selected-info" id="hoverInfo"></div>
+    <div class="meta" id="countInfo">0 LEDs selected</div>
+
+    <div class="row">
+      <button id="copyBtn">Copy tuple</button>
+      <button id="clearBtn">Clear</button>
+      <button id="invertBtn">Invert</button>
+      <button id="horizontalBtn">Horizontal</button>
+      <button id="verticalBtn">Vertical</button>
+    </div>
+
+    <label for="tupleOut">Tuple</label>
+    <textarea id="tupleOut" spellcheck="false">()</textarea>
+
+    <p>Paste an existing tuple here, then load it onto the board.</p>
+    <input id="tupleIn" placeholder="48, 108, 156, ..." />
+    <div class="row">
+      <button id="loadBtn">Load tuple</button>
+      <button id="openEyeBtn">Load repo OpenEye</button>
+      <button id="midEyeBtn">Load repo MidOpenEye</button>
+    </div>
+  </section>
+</main>
+
+<script>
+const ringSpecs = [
+  { ring: 1, start: 48,  count: 60 },
+  { ring: 2, start: 108, count: 48 },
+  { ring: 3, start: 156, count: 40 },
+  { ring: 4, start: 196, count: 32 },
+  { ring: 5, start: 228, count: 24 },
+  { ring: 6, start: 252, count: 16 },
+  { ring: 7, start: 268, count: 12 },
+  { ring: 8, start: 280, count: 8  },
+  { ring: 9, start: 288, count: 1  },
+];
+
+const openEye = [
+  48, 108, 156, 196, 228, 252, 268, 280, 288,
+  284, 274, 260, 240, 212, 176, 132, 78
+];
+
+const midOpenEye = [
+  115, 120, 125,
+  52, 162, 166, 170, 74,
+  111, 201, 204, 207, 129,
+  109, 158, 199, 209, 174, 131,
+  48, 78,
+  155, 194, 225, 215, 178, 133,
+  228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
+  240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251,
+  268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279
+];
+
+const board = document.getElementById("board");
+const tupleOut = document.getElementById("tupleOut");
+const tupleIn = document.getElementById("tupleIn");
+const hoverInfo = document.getElementById("hoverInfo");
+const countInfo = document.getElementById("countInfo");
+
+const selected = new Set();
+const ledEls = new Map();
+
+function radiusForRing(ring) {
+  if (ring === 9) return 0;
+  return 112 - ((ring - 1) * 14);
+}
+
+function ledPoint(spec, ordinal) {
+  const radius = radiusForRing(spec.ring);
+  const led = spec.start + ordinal;
+
+  if (spec.count === 1) {
+    return { led, ring: spec.ring, ordinal, radius, theta: 0, x: 0, y: 0 };
+  }
+
+  const theta = 2 * Math.PI * ordinal / spec.count;
+  return {
+    led,
+    ring: spec.ring,
+    ordinal,
+    radius,
+    theta,
+    x: radius * Math.cos(theta),
+    y: radius * Math.sin(theta)
+  };
+}
+
+function formatTuple() {
+  const values = Array.from(selected).sort((a, b) => a - b);
+  if (values.length === 0) return "()";
+
+  const lines = [];
+  for (let i = 0; i < values.length; i += 12) {
+    lines.push("    " + values.slice(i, i + 12).join(", "));
+  }
+  return "(\n" + lines.join(",\n") + ",\n)";
+}
+
+function refresh() {
+  for (const [led, el] of ledEls.entries()) {
+    el.classList.toggle("selected", selected.has(led));
+  }
+  tupleOut.value = formatTuple();
+  countInfo.textContent = `${selected.size} LED${selected.size === 1 ? "" : "s"} selected`;
+}
+
+function toggleLed(led) {
+  if (selected.has(led)) selected.delete(led);
+  else selected.add(led);
+  refresh();
+}
+
+function loadValues(values) {
+  selected.clear();
+  for (const value of values) {
+    if (ledEls.has(value)) selected.add(value);
+  }
+  refresh();
+}
+
+function parseTuple(text) {
+  const matches = text.match(/\d+/g) || [];
+  return matches.map(Number);
+}
+
+function addSvg(tag, attrs = {}) {
+  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const [key, value] of Object.entries(attrs)) {
+    el.setAttribute(key, String(value));
+  }
+  board.appendChild(el);
+  return el;
+}
+
+function buildBoard() {
+  addSvg("line", { x1: -120, y1: 0, x2: 120, y2: 0, class: "axis" });
+  addSvg("line", { x1: 0, y1: -120, x2: 0, y2: 120, class: "axis" });
+
+  for (const spec of ringSpecs) {
+    const radius = radiusForRing(spec.ring);
+    if (radius > 0) {
+      addSvg("circle", { cx: 0, cy: 0, r: radius, class: "ring-guide" });
+    }
+  }
+
+  for (const spec of ringSpecs) {
+    const ledRadius = spec.ring === 9 ? 4.2 : Math.max(2.5, 4.7 - spec.ring * 0.12);
+
+    for (let k = 0; k < spec.count; k++) {
+      const p = ledPoint(spec, k);
+      const el = addSvg("circle", {
+        cx: p.x,
+        cy: -p.y,
+        r: ledRadius,
+        class: "led",
+        "data-led": p.led
+      });
+
+      const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      title.textContent = `LED ${p.led} | Ring ${p.ring} | Ordinal ${p.ordinal}`;
+      el.appendChild(title);
+
+      el.addEventListener("click", () => toggleLed(p.led));
+      el.addEventListener("mouseenter", () => {
+        const deg = Math.round((p.theta * 180 / Math.PI) * 100) / 100;
+        hoverInfo.textContent = `LED ${p.led} | ring ${p.ring} | ordinal ${p.ordinal} | ${deg}°`;
+      });
+      el.addEventListener("mouseleave", () => {
+        hoverInfo.textContent = "";
+      });
+
+      ledEls.set(p.led, el);
+    }
+  }
+
+  refresh();
+}
+
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  await navigator.clipboard.writeText(tupleOut.value);
+});
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  selected.clear();
+  refresh();
+});
+
+document.getElementById("invertBtn").addEventListener("click", () => {
+  for (const led of ledEls.keys()) {
+    if (selected.has(led)) selected.delete(led);
+    else selected.add(led);
+  }
+  refresh();
+});
+
+document.getElementById("loadBtn").addEventListener("click", () => {
+  loadValues(parseTuple(tupleIn.value));
+});
+
+document.getElementById("openEyeBtn").addEventListener("click", () => {
+  loadValues(openEye);
+});
+
+document.getElementById("midEyeBtn").addEventListener("click", () => {
+  loadValues(midOpenEye);
+});
+
+document.getElementById("horizontalBtn").addEventListener("click", () => {
+  loadValues(openEye);
+});
+
+document.getElementById("verticalBtn").addEventListener("click", () => {
+  const values = [];
+  for (const spec of ringSpecs) {
+    if (spec.count === 1) {
+      values.push(spec.start);
+    } else {
+      values.push(spec.start + spec.count / 4);
+      values.push(spec.start + (3 * spec.count / 4));
+    }
+  }
+  loadValues(values);
+});
+
+buildBoard();
+</script>
+</body>
+</html>
